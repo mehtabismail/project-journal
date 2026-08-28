@@ -1,0 +1,15 @@
+{
+  "$schema": "https://www.schemastore.org/claude-code-marketplace.json",
+  "name": "mehtabismail",
+  "owner": {
+    "name": "Mehtab Ismail"
+  },
+  "description": "Personal Claude Code skills by Mehtab Ismail.",
+  "plugins": [
+    {
+      "name": "project-journal",
+      "source": ".",
+      "description": "Client-facing work log and meeting record for a project, with a generated HTML report. Log delivered work and store meeting minutes by command; every change links back to the meeting it came from."
+    }
+  ]
+}

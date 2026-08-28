@@ -1,0 +1,13 @@
+{
+  "$schema": "https://www.schemastore.org/claude-code-plugin.json",
+  "name": "project-journal",
+  "description": "Maintain a client-facing work log and meeting record for a project and generate an HTML report from them. Log delivered work by command with automatic classification (new feature / change request / enhancement / bug fix), store meeting minutes verbatim, and cross-link every change to the meeting it came from.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Mehtab Ismail"
+  },
+  "homepage": "https://github.com/mehtabismail/project-journal",
+  "repository": "https://github.com/mehtabismail/project-journal",
+  "license": "MIT",
+  "keywords": ["worklog", "meetings", "client-reporting", "scope-tracking", "change-requests"]
+}
