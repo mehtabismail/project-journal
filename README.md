@@ -1,13 +1,15 @@
 <h1 align="center">Project Journal</h1>
 
 <p align="center">
-  A Claude Code skill that keeps a <b>client-facing work log and meeting record</b><br>
+  An Agent Skill for <b>Cursor</b> and <b>Claude Code</b> that keeps a
+  <b>client-facing work log and meeting record</b><br>
   for a software project — and generates a single HTML report from them.
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge" alt="License: MIT">
   <img src="https://img.shields.io/badge/python-3.8%2B-yellow?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.8+">
+  <img src="https://img.shields.io/badge/Cursor-Agent_Skill-0098FF?style=for-the-badge" alt="Cursor Agent Skill">
   <img src="https://img.shields.io/badge/Claude_Code-skill%20%2B%20plugin-8A63D2?style=for-the-badge" alt="Claude Code skill + plugin">
   <img src="https://img.shields.io/badge/dependencies-none-brightgreen?style=for-the-badge" alt="No dependencies">
 </p>
@@ -39,56 +41,70 @@ source of truth; the HTML is a **generated artifact**, never hand-edited.
 
 ## Installation
 
-You can install this **two ways** — pick whichever you prefer. Both give you the
-same `/project-journal` command.
+This is a standard [Agent Skill](https://docs.cursor.com/docs/skills), so it runs
+in both **Cursor** and **Claude Code**. Pick your tool below — each path is
+self-contained, and every one gives you the same `/project-journal` command.
 
-### Option 1 — Claude Code marketplace (in-app, no terminal)
+<details open>
+<summary><b>🟦 Cursor</b> (no Claude Code needed)</summary>
 
-Run these inside Claude Code:
+<br>
+
+You do **not** need Claude Code or a `.claude` folder. Clone the skill into your
+personal Cursor skills directory:
+
+```bash
+git clone https://github.com/mehtabismail/project-journal.git ~/.cursor/skills/project-journal
+```
+
+`git clone` creates the `~/.cursor/skills/` folder for you if it doesn't exist yet
+— nothing to set up first. Then restart Cursor and invoke it by typing `/` in
+Agent chat and picking **project-journal**.
+
+- **Per-project instead?** Clone into `.cursor/skills/project-journal` inside a
+  specific repo rather than `~/.cursor/skills/`.
+- **Prefer the vendor-neutral location?** `~/.agents/skills/project-journal`
+  (or `.agents/skills/project-journal` per-project) works identically.
+- **Update later:** `cd ~/.cursor/skills/project-journal && git pull`
+
+</details>
+
+<details>
+<summary><b>🟪 Claude Code</b></summary>
+
+<br>
+
+**Option A — Marketplace (in-app, no terminal).** Run these inside Claude Code:
 
 ```
 /plugin marketplace add mehtabismail/project-journal
 /plugin install project-journal@mehtabismail
 ```
 
-Claude Code fetches the repo, installs the plugin, and `/project-journal` is
-ready. Update later with `/plugin marketplace update mehtabismail`.
+Update later with `/plugin marketplace update mehtabismail`.
 
-### Option 2 — Git clone into your skills directory
+**Option B — Git clone into your skills directory:**
 
 ```bash
 git clone https://github.com/mehtabismail/project-journal.git ~/.claude/skills/project-journal
 ```
 
-The clone destination folder name — `project-journal` — is what becomes the
-command, so keep it exactly as above. Update later with:
+The clone folder name — `project-journal` — is what becomes the command, so keep
+it exactly as above. Per-project: clone into `.claude/skills/project-journal`
+inside a repo. Update later with `cd ~/.claude/skills/project-journal && git pull`.
 
-```bash
-cd ~/.claude/skills/project-journal && git pull
-```
+</details>
 
-> **Per-project instead of personal?** Clone into `.claude/skills/project-journal`
-> inside a specific project rather than `~/.claude/skills/`.
+> **Already use it in one tool and want the other?** You don't have to install
+> twice. Cursor also loads skills from Claude's directories (`~/.claude/skills/`,
+> `.claude/skills/`) for compatibility, so an existing Claude install is picked up
+> by Cursor automatically. (It does not work the other way around — Claude Code
+> does not read `~/.cursor/skills/`.)
 
-### Also works in Cursor
-
-This is a standard [Agent Skill](https://docs.cursor.com/docs/skills), so it runs
-in **Cursor** too — the `SKILL.md` format is shared. You get the same
-`/project-journal` command.
-
-- **Already installed for Claude?** Cursor loads skills from Claude's directories
-  for compatibility (`~/.claude/skills/`, `.claude/skills/`), so an existing
-  install is picked up automatically — nothing more to do.
-- **Cursor-only machine?** Clone into a Cursor skills directory instead:
-  ```bash
-  git clone https://github.com/mehtabismail/project-journal.git ~/.cursor/skills/project-journal
-  ```
-  (`~/.agents/skills/project-journal` — the vendor-neutral location — works too.)
-
-Invoke it by typing `/` in Agent chat and picking `project-journal`. The only
-runtime difference is the report-build command: Claude Code expands
-`${CLAUDE_SKILL_DIR}`, while Cursor uses the skill's own directory path — the
-skill's instructions cover both, so you don't have to think about it.
+The only runtime difference between the two tools is the report-build command:
+Claude Code expands `${CLAUDE_SKILL_DIR}`, while Cursor uses the skill's own
+directory path. The skill's own instructions cover both, so you never have to
+think about it.
 
 ## Prerequisites
 
@@ -144,35 +160,43 @@ The requester tag decides the confusable pair: `(client)` → change request,
 
 ```
 project-journal/
-├── .claude-plugin/           marketplace + plugin manifests (Option 1 install)
-│   ├── marketplace.json
-│   └── plugin.json
 ├── SKILL.md                  the skill: classification rules + workflow
 ├── references/
 │   └── formats.md            exact entry formats the parser depends on
-└── scripts/
-    ├── build_reports.py      markdown → HTML generator (stdlib only)
-    └── test_build.py         parser + renderer test suite
+├── scripts/
+│   ├── build_reports.py      markdown → HTML generator (stdlib only)
+│   └── test_build.py         parser + renderer test suite
+└── .claude-plugin/           Claude Code marketplace/plugin manifests (ignored by Cursor)
+    ├── marketplace.json
+    └── plugin.json
 ```
 
-The same root `SKILL.md` powers both install methods: cloned into a skills
-directory it loads as a standalone skill, and via the marketplace the repo root
-is installed as a single-skill plugin.
+The same root `SKILL.md` drives every install path: cloned into a Cursor or
+Claude skills directory it loads as a standalone Agent Skill, and via the Claude
+Code marketplace the repo root is installed as a single-skill plugin. Cursor
+simply ignores the `.claude-plugin/` folder.
 
-Run the tests:
+Run the tests (`python3 <skill-dir>/scripts/test_build.py`) — e.g. for a Cursor
+personal install:
 
 ```bash
-python3 ~/.claude/skills/project-journal/scripts/test_build.py
+python3 ~/.cursor/skills/project-journal/scripts/test_build.py
 ```
 
 ## Troubleshooting
 
-**`/project-journal` doesn't appear after installing.** Restart Claude Code (or
-start a fresh session) so it re-scans skills and plugins.
+**`/project-journal` doesn't appear after installing.** Restart your editor
+(Cursor or Claude Code) so it re-scans its skills directories, then type `/` in
+Agent chat and search for it.
 
-**Git-clone install: command name is wrong.** The command comes from the clone
-folder name. Make sure you cloned into `…/skills/project-journal`, not a
-differently named folder.
+**Cursor: clone folder must be right.** Make sure you cloned into a directory
+Cursor scans — `~/.cursor/skills/project-journal`, `.cursor/skills/project-journal`,
+or the vendor-neutral `~/.agents/skills/project-journal`. The skill's `name`
+(`project-journal`) must match its folder name, which the clone command already
+ensures.
+
+**Command name is wrong.** The invocation name comes from the skill folder. Make
+sure you cloned into `…/skills/project-journal`, not a differently named folder.
 
 **The build errors out instead of producing a report.** That's intended — it
 refuses to generate from a malformed entry, a duplicate ID, or a meeting
