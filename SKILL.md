@@ -124,11 +124,23 @@ When the developer pastes minutes:
 
 ## Generating the report
 
-Run the bundled generator from the **project root** (so it finds `./docs`):
+Run the bundled generator from the **project root** (so it finds `./docs`). The
+script lives in this skill's own `scripts/` directory:
 
 ```bash
 python3 "${CLAUDE_SKILL_DIR}/scripts/build_reports.py"
 ```
+
+`${CLAUDE_SKILL_DIR}` is set by Claude Code and expands to this skill's folder.
+In other Agent-Skills runtimes (for example Cursor) that variable is **not** set —
+run the same bundled script by the absolute path of this skill's own directory
+instead (the folder this `SKILL.md` was loaded from):
+
+```bash
+python3 "<this-skill-directory>/scripts/build_reports.py"
+```
+
+It is the same file either way; only how the path is spelled differs.
 
 Do this **when someone wants to show the client** — not after every log. It parses both markdown files and writes a single `docs/public/report.html` (work log + meeting record with a toggle). Standard library only, so it runs on any Python 3.8+.
 

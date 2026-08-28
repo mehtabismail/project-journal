@@ -70,6 +70,26 @@ cd ~/.claude/skills/project-journal && git pull
 > **Per-project instead of personal?** Clone into `.claude/skills/project-journal`
 > inside a specific project rather than `~/.claude/skills/`.
 
+### Also works in Cursor
+
+This is a standard [Agent Skill](https://docs.cursor.com/docs/skills), so it runs
+in **Cursor** too — the `SKILL.md` format is shared. You get the same
+`/project-journal` command.
+
+- **Already installed for Claude?** Cursor loads skills from Claude's directories
+  for compatibility (`~/.claude/skills/`, `.claude/skills/`), so an existing
+  install is picked up automatically — nothing more to do.
+- **Cursor-only machine?** Clone into a Cursor skills directory instead:
+  ```bash
+  git clone https://github.com/mehtabismail/project-journal.git ~/.cursor/skills/project-journal
+  ```
+  (`~/.agents/skills/project-journal` — the vendor-neutral location — works too.)
+
+Invoke it by typing `/` in Agent chat and picking `project-journal`. The only
+runtime difference is the report-build command: Claude Code expands
+`${CLAUDE_SKILL_DIR}`, while Cursor uses the skill's own directory path — the
+skill's instructions cover both, so you don't have to think about it.
+
 ## Prerequisites
 
 Python 3.8+ is required for the report generator (standard library only — the
